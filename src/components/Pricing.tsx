@@ -1,5 +1,6 @@
 import { motion } from "framer-motion"
 import { Button } from "./ui/button"
+import { useNavigate } from "react-router-dom"
 
 const essentialFeatures = [
   "Rapport PDF détaillé (8 pages)",
@@ -29,6 +30,12 @@ function StarBullet({ color = "#1A5C52" }: { color?: string }) {
 }
 
 export function Pricing() {
+  const navigate = useNavigate();
+
+  // const handleSelectPlan = (plan: 'essentiel' | 'premium') => {
+  //   navigate('/checkout', { state: { plan } });
+  // };
+
   return (
     <section id="pricing" className="py-20 sm:py-24 bg-[#F9F3E3]">
       <div className="container mx-auto px-4 sm:px-6">
@@ -64,7 +71,7 @@ export function Pricing() {
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid sm:grid-cols-2 gap-6 sm:gap-8 max-w-3xl mx-auto">
+        <div className="grid sm:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto">
 
           {/* ── Essentiel ── */}
           <motion.div
@@ -100,13 +107,7 @@ export function Pricing() {
               ))}
             </ul>
 
-            <Button
-              variant="outline"
-              size="lg"
-              className="duovrai-btn w-full border-[#1A5C52] text-[#1A5C52] hover:bg-[#1A5C52] hover:text-white h-12 text-[14px]"
-            >
-              Choisir Essentiel
-            </Button>
+ 
           </motion.div>
 
           {/* ── Premium ── */}
@@ -163,13 +164,6 @@ export function Pricing() {
                 </li>
               ))}
             </ul>
-
-            <Button
-              size="lg"
-              className="duovrai-btn w-full bg-[#B8962E] text-white hover:bg-[#B8962E]/90 h-12 text-[14px] shadow-md"
-            >
-              Choisir Premium
-            </Button>
           </motion.div>
 
         </div>
