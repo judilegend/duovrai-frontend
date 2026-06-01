@@ -8,6 +8,7 @@ import { FormulaireSaisie } from "./components/FormulaireSaisie"
 import { Footer } from "./components/Footer"
 import { Checkout } from "./pages/Checkout"
 import { AdminDashboard } from "./pages/AdminDashboard"
+import { PricingPage } from "./pages/PricingPage"
 
 function LandingPage() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/pricing-page" element={<PricingPage />} />
         </Routes>
       </div>
     </Router>
