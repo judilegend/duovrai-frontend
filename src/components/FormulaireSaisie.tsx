@@ -118,7 +118,7 @@ export function FormulaireSaisie() {
     if (!hasErrors) {
       // Redirect to Stripe Checkout
       console.log("Form valid, proceeding to checkout:", form)
-      navigate('/checkout');
+      navigate('/pricing-page');
     }
   }
 
