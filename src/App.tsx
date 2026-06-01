@@ -6,15 +6,21 @@ import { ReportPreview } from "./components/ReportPreview"
 import { Pricing } from "./components/Pricing"
 import { FormulaireSaisie } from "./components/FormulaireSaisie"
 import { Footer } from "./components/Footer"
+import { Checkout } from "./pages/Checkout"
+import { AdminDashboard } from "./pages/AdminDashboard"
 
 function LandingPage() {
   return (
     <>
-      <Hero />
-      <Features />
-      <ReportPreview />
-      <Pricing />
-      <FormulaireSaisie />
+      <Navbar />
+      <main className="flex-1">
+        <Hero />
+        <Features />
+        <ReportPreview />
+        <Pricing />
+        <FormulaireSaisie />
+      </main>
+      <Footer />
     </>
   )
 }
@@ -23,13 +29,11 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-white flex flex-col">
-        <Navbar />
-        <main className="flex-1">
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-          </Routes>
-        </main>
-        <Footer />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+        </Routes>
       </div>
     </Router>
   )
