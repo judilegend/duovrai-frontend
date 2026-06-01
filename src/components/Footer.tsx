@@ -9,7 +9,7 @@ export function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <img src="/logo.jpg" alt="Duovrai" className="h-8 w-auto brightness-0 invert opacity-90" />
+              <img src="/logo.jpg" alt="Duovrai" className="h-12 w-auto " />
             </div>
             <p className="text-white/60 text-[14px] leading-relaxed max-w-xs" style={{ fontFamily: "'Inter', Calibri, sans-serif" }}>
               Votre analyse de compatibilité amoureuse propulsée par l'intelligence artificielle. Découvrez ce que les astres révèlent de votre couple.
