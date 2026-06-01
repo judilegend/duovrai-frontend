@@ -280,59 +280,7 @@ export function FormulaireSaisie() {
             )}
           </div>
 
-          {/* ── Choix de l'offre ── */}
-          <div>
-            <p className="text-[13px] text-[#555555] mb-3" style={{ fontFamily: "'Montserrat', Arial, sans-serif", fontWeight: 500 }}>
-              Votre formule
-            </p>
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                type="button"
-                onClick={() => setForm((prev) => ({ ...prev, offre: "essentiel" }))}
-                className={`p-4 rounded-[6px] border-2 text-center transition-all duration-200 ${
-                  form.offre === "essentiel"
-                    ? "border-[#1A5C52] bg-[#E8F2F0]/40"
-                    : "border-[#E8F2F0] bg-white hover:border-[#1A5C52]/30"
-                }`}
-              >
-                <p
-                  className="text-[16px] mb-0.5"
-                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 700, color: "#1A5C52" }}
-                >
-                  Essentiel
-                </p>
-                <p
-                  className="text-[20px] leading-none"
-                  style={{ fontFamily: "'Montserrat', Arial, sans-serif", fontWeight: 600, color: "#1A5C52" }}
-                >
-                  9,90<span className="text-[12px] text-[#B8962E] ml-0.5">EUR</span>
-                </p>
-              </button>
-              <button
-                type="button"
-                onClick={() => setForm((prev) => ({ ...prev, offre: "premium" }))}
-                className={`p-4 rounded-[6px] border-2 text-center transition-all duration-200 relative ${
-                  form.offre === "premium"
-                    ? "border-[#1A5C52] bg-[#E8F2F0]/40"
-                    : "border-[#E8F2F0] bg-white hover:border-[#1A5C52]/30"
-                }`}
-              >
-                <p
-                  className="text-[16px] mb-0.5"
-                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 700, color: "#1A5C52" }}
-                >
-                  Premium
-                </p>
-                <p
-                  className="text-[20px] leading-none"
-                  style={{ fontFamily: "'Montserrat', Arial, sans-serif", fontWeight: 600, color: "#1A5C52" }}
-                >
-                  19,90<span className="text-[12px] text-[#B8962E] ml-0.5">EUR</span>
-                </p>
-              </button>
-            </div>
-          </div>
-
+  
           {/* ── Submit ── */}
           <Button
             type="submit"
