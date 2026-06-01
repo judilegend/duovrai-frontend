@@ -9,8 +9,8 @@ export function Hero() {
       {/* ── Decorative Background — subtle celestial circles ── */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         {/* Grand cercle céleste Vert très pâle */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] sm:w-[700px] sm:h-[700px] lg:w-[800px] lg:h-[800px] rounded-full border border-[#1A5C52]/[0.06]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] lg:w-[580px] lg:h-[580px] rounded-full border border-[#B8962E]/[0.08]" />
+        {/* <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] sm:w-[700px] sm:h-[700px] lg:w-[800px] lg:h-[800px] rounded-full border border-[#1A5C52]/[0.06]" /> */}
+        {/* <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] lg:w-[580px] lg:h-[580px] rounded-full border border-[#B8962E]/[0.08]" /> */}
         {/* Étoile à 4 branches subtile — référence au logo */}
         <svg
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 text-[#B8962E] opacity-30"
