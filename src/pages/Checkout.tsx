@@ -103,16 +103,7 @@ export function Checkout() {
           <h2 className="text-xl font-medium mb-6 text-gray-900">Coordonnées</h2>
           
           <form onSubmit={handlePayment} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-              <input 
-                type="email" 
-                required 
-                className="w-full px-4 py-3 rounded border border-gray-300 focus:ring-2 focus:ring-[#1A5C52] focus:border-[#1A5C52] outline-none transition-all"
-                placeholder="votre@email.com"
-              />
-            </div>
-            
+      
             <h2 className="text-xl font-medium pt-4 mb-2 text-gray-900">Paiement</h2>
             
             <div className="bg-gray-50 p-4 rounded border border-gray-200 mb-4 flex items-center justify-between">
