@@ -14,8 +14,8 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-[#E8F2F0] shadow-[0_1px_3px_rgba(26,92,82,0.06)]">
-      <div className="container mx-auto px-4 sm:px-6 h-[80px] flex items-center justify-between">
+    <header className="w-full sticky top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-[#E8F2F0] shadow-[0_1px_3px_rgba(26,92,82,0.06)]">
+      <div className=" max-w-[1200px] mx-auto px-4 sm:px-6 h-[80px] flex items-center justify-between">
 
         {/* Logo — zone de protection respectée */}
         <Link to="/" className="flex items-center shrink-0">
