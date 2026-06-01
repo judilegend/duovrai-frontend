@@ -2,7 +2,7 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { Button } from "./ui/button"
 import { ArrowRight } from "lucide-react"
-
+import { useNavigate } from "react-router-dom"
 interface FormData {
   prenom1: string
   date1: string
@@ -76,7 +76,7 @@ export function FormulaireSaisie() {
 
   const [errors, setErrors] = useState<FieldErrors>({})
   const [touched, setTouched] = useState<Record<string, boolean>>({})
-
+  const navigate = useNavigate()
   function handleChange(field: keyof FormData, value: string) {
     if (field === "date1" || field === "date2") {
       value = formatDateInput(value)
@@ -118,6 +118,7 @@ export function FormulaireSaisie() {
     if (!hasErrors) {
       // Redirect to Stripe Checkout
       console.log("Form valid, proceeding to checkout:", form)
+      navigate('/checkout');
     }
   }
 
@@ -280,7 +281,7 @@ export function FormulaireSaisie() {
             )}
           </div>
 
-  
+   
           {/* ── Submit ── */}
           <Button
             type="submit"
