@@ -1,22 +1,21 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
-import { Button } from "./ui/button"
-import { Menu, X } from "lucide-react"
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "./ui/button";
+import { Menu, X } from "lucide-react";
 
 const navLinks = [
   { href: "/", label: "Accueil" },
   { href: "#features", label: "Comment ça marche" },
   { href: "#pricing", label: "Nos offres" },
   { href: "#faq", label: "FAQ" },
-]
+];
 
 export function Navbar() {
-  const [mobileOpen, setMobileOpen] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <header className="w-full overflow-hidden sticky top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-[#E8F2F0] shadow-[0_1px_3px_rgba(26,92,82,0.06)]">
       <div className=" max-w-[1200px] mx-auto px-4 sm:px-6 h-[80px] flex items-center justify-between">
-
         {/* Logo — zone de protection respectée */}
         <Link to="/" className="flex items-center shrink-0">
           <img
@@ -24,12 +23,13 @@ export function Navbar() {
             alt="Duovrai — Découvrez l'alchimie de votre relation"
             className="h-[120px]"
           />
-          
-
         </Link>
 
         {/* Navigation Desktop — Montserrat Medium */}
-        <nav className="hidden md:flex items-center gap-8" aria-label="Navigation principale">
+        <nav
+          className="hidden md:flex items-center gap-8"
+          aria-label="Navigation principale"
+        >
           {navLinks.map((link) => (
             <a
               key={link.href}
@@ -43,16 +43,8 @@ export function Navbar() {
 
         {/* CTA Desktop */}
         <div className="hidden md:flex items-center gap-3">
-          <Button
-            variant="ghost"
-            className="duovrai-btn text-[#1A5C52] hover:bg-[#E8F2F0]"
-          >
-            Connexion
-          </Button>
-          <Button
-            className="duovrai-btn bg-[#1A5C52] text-white hover:bg-[#1A5C52]/90 shadow-sm"
-          >
-            Analyser mon couple
+          <Button className="duovrai-btn bg-[#1A5C52] text-white hover:bg-[#1A5C52]/90 shadow-sm">
+            Commencer
           </Button>
         </div>
 
@@ -63,14 +55,21 @@ export function Navbar() {
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Menu"
         >
-          {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {mobileOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
+          )}
         </button>
       </div>
 
       {/* Mobile Menu */}
       {mobileOpen && (
         <div className="md:hidden bg-white border-t border-[#E8F2F0] pb-4">
-          <nav className="flex flex-col px-6 pt-2 gap-1" aria-label="Navigation mobile">
+          <nav
+            className="flex flex-col px-6 pt-2 gap-1"
+            aria-label="Navigation mobile"
+          >
             {navLinks.map((link) => (
               <a
                 key={link.href}
@@ -89,14 +88,12 @@ export function Navbar() {
             >
               Connexion
             </Button>
-            <Button
-              className="duovrai-btn w-full bg-[#1A5C52] text-white hover:bg-[#1A5C52]/90"
-            >
+            <Button className="duovrai-btn w-full bg-[#1A5C52] text-white hover:bg-[#1A5C52]/90">
               Analyser mon couple
             </Button>
           </div>
         </div>
       )}
     </header>
-  )
+  );
 }
