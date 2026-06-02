@@ -96,7 +96,6 @@ export function Hero() {
         <div className="absolute bottom-[20%] right-[10%] w-48 h-48 bg-[#F9F3E3] rounded-full blur-[80px] opacity-50" />
       </div>
 
-      {/* ── Contenu principal — centré ── */}
       <div className="relative z-10 container mx-auto px-4 sm:px-6 py-16 sm:py-20 flex flex-col items-center text-center max-w-3xl">
         {/* Tagline — Montserrat Light · Caps · Espacement large */}
         <motion.p
@@ -108,7 +107,6 @@ export function Hero() {
           Analyse de compatibilité par Intelligence Artificielle
         </motion.p>
 
-        {/* Titre H1 — Cormorant Garamond Bold — 36–44px */}
         <motion.h1
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -119,7 +117,6 @@ export function Hero() {
           de votre relation
         </motion.h1>
 
-        {/* Sous-titre — Inter Regular — Gris — 16–17px */}
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -131,7 +128,6 @@ export function Hero() {
           l'alchimie unique de votre couple.
         </motion.p>
 
-        {/* CTA — Bouton Vert #1A5C52 · texte blanc · border-radius 6px */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -153,32 +149,26 @@ export function Hero() {
           </a>
         </motion.div>
 
-        {/* Indicateurs de confiance — Montserrat Light Caps */}
+        {/* Indicateurs de confiance — cartes plus visibles */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-14 pt-6 border-t border-[#E8F2F0]"
+          className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-14"
         >
           {[
             "Rapport 8–12 pages",
             "100% confidentiel",
             "Livraison instantanée",
           ].map((item) => (
-            <span
+            <div
               key={item}
-              className="duovrai-label text-[11px] flex items-center gap-2"
+              className="rounded-[28px] border border-[#E8F2F0] bg-white/90 px-5 py-4 shadow-[0_24px_60px_-44px_rgba(26,92,82,0.45)]"
             >
-              {/* Étoile à 4 branches comme puce */}
-              <svg
-                className="w-3 h-3 text-[#B8962E]"
-                viewBox="0 0 12 12"
-                fill="currentColor"
-              >
-                <path d="M6 0L7.2 4.8L12 6L7.2 7.2L6 12L4.8 7.2L0 6L4.8 4.8L6 0Z" />
-              </svg>
-              {item}
-            </span>
+              <span className="duovrai-label block text-[13px] font-semibold uppercase tracking-[0.18em] text-[#1A5C52] text-center">
+                {item}
+              </span>
+            </div>
           ))}
         </motion.div>
       </div>
