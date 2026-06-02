@@ -1,14 +1,14 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import { Navbar } from "./components/Navbar"
-import { Hero } from "./components/Hero"
-import { Features } from "./components/Features"
-import { ReportPreview } from "./components/ReportPreview"
-import { Pricing } from "./components/Pricing"
-import { FormulaireSaisie } from "./components/FormulaireSaisie"
-import { Footer } from "./components/Footer"
-import { Checkout } from "./pages/Checkout"
-import { AdminDashboard } from "./pages/AdminDashboard"
-import { PricingPage } from "./pages/PricingPage"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Navbar } from "./components/Navbar";
+import { Hero } from "./components/Hero";
+import { Features } from "./components/Features";
+import { ReportPreview } from "./components/ReportPreview";
+import { Pricing } from "./components/Pricing";
+import { FormulaireSaisie } from "./components/FormulaireSaisie";
+import { Footer } from "./components/Footer";
+import { Checkout } from "./pages/Checkout";
+import { AdminDashboard } from "./pages/AdminDashboard";
+import { PricingPage } from "./pages/PricingPage";
 
 function LandingPage() {
   return (
@@ -23,7 +23,7 @@ function LandingPage() {
       </main>
       <Footer />
     </>
-  )
+  );
 }
 
 function App() {
@@ -38,7 +38,7 @@ function App() {
         </Routes>
       </div>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;
