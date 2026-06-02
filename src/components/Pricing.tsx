@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { Button } from "./ui/button";
-import { useNavigate } from "react-router-dom";
+// import { Button } from "./ui/button";
+// import { useNavigate } from "react-router-dom";
 
 const essentialFeatures = [
   "Rapport PDF détaillé (8 pages)",
@@ -34,7 +34,7 @@ function StarBullet({ color = "#1A5C52" }: { color?: string }) {
 }
 
 export function Pricing() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // const handleSelectPlan = (plan: 'essentiel' | 'premium') => {
   //   navigate('/checkout', { state: { plan } });
