@@ -3,8 +3,8 @@ import { Button } from "../components/ui/button";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { useEffect } from "react";
-import { Loader2 } from "lucide-react";
-import { useStripeCheckout } from "../hooks/useStripeCheckout";
+import { useNavigate } from "react-router-dom";
+import { useFormData } from "../context/FormDataContext";
 
 const essentialFeatures = [
   "Rapport PDF détaillé (8 pages)",
@@ -38,7 +38,16 @@ function StarBullet({ color = "#1A5C52" }: { color?: string }) {
 }
 
 export function PricingPage() {
-  const { loadingPlan, error, handleSelectPlan } = useStripeCheckout();
+  const navigate = useNavigate();
+  const { formData, setFormData } = useFormData();
+
+  const handleSelectPlan = (plan: "essentiel" | "premium") => {
+    // Save selected plan to context and sessionStorage, then go to confirmation
+    const updated = { ...formData, offre: plan };
+    setFormData(updated as any);
+    sessionStorage.setItem("userFormData", JSON.stringify(updated));
+    navigate("/confirm");
+  };
 
   // Scroll to top on mount
   useEffect(() => {
@@ -76,16 +85,6 @@ export function PricingPage() {
               souhaité.
             </motion.p>
           </div>
-
-          {error && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="max-w-md mx-auto mb-6 p-4 bg-red-50 border border-red-200 rounded-[6px] text-red-700 text-sm text-center"
-            >
-              {error}
-            </motion.div>
-          )}
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* ── Essentiel ── */}
