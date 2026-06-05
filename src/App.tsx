@@ -10,6 +10,7 @@ import { Success } from "./pages/Success";
 import { Cancel } from "./pages/Cancel";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import { PricingPage } from "./pages/PricingPage";
+import { ConfirmationPage } from "./pages/ConfirmationPage";
 
 function LandingPage() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path="/retry" element={<Cancel />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/pricing-page" element={<PricingPage />} />
+          <Route path="/confirm" element={<ConfirmationPage />} />
         </Routes>
       </div>
     </Router>
