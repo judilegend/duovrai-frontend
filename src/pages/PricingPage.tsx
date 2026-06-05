@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
 import { Button } from "../components/ui/button";
-import { useNavigate } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { useEffect } from "react";
+import { Loader2 } from "lucide-react";
+import { useStripeCheckout } from "../hooks/useStripeCheckout";
 
 const essentialFeatures = [
   "Rapport PDF détaillé (8 pages)",
@@ -37,16 +38,12 @@ function StarBullet({ color = "#1A5C52" }: { color?: string }) {
 }
 
 export function PricingPage() {
-  const navigate = useNavigate();
+  const { loadingPlan, error, handleSelectPlan } = useStripeCheckout();
 
   // Scroll to top on mount
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  const handleSelectPlan = (plan: "essentiel" | "premium") => {
-    navigate("/checkout", { state: { plan } });
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F9F3E3]">
@@ -79,6 +76,16 @@ export function PricingPage() {
               souhaité.
             </motion.p>
           </div>
+
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="max-w-md mx-auto mb-6 p-4 bg-red-50 border border-red-200 rounded-[6px] text-red-700 text-sm text-center"
+            >
+              {error}
+            </motion.div>
+          )}
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* ── Essentiel ── */}
@@ -145,7 +152,7 @@ export function PricingPage() {
                 onClick={() => handleSelectPlan("essentiel")}
                 variant="outline"
                 size="lg"
-                className="w-full border-2 border-[#1A5C52] text-[#1A5C52] hover:bg-[#1A5C52] hover:text-white h-14 text-[15px] font-medium rounded-[8px] transition-all"
+                className="w-full border-2 border-[#1A5C52] text-[#1A5C52] hover:bg-[#1A5C52] hover:text-white h-14 text-[15px] font-medium rounded-[8px] transition-all flex items-center justify-center gap-2"
               >
                 Choisir la formule Essentiel
               </Button>
@@ -244,7 +251,7 @@ export function PricingPage() {
               <Button
                 onClick={() => handleSelectPlan("premium")}
                 size="lg"
-                className="w-full bg-[#B8962E] text-white hover:bg-[#a18225] h-14 text-[15px] font-medium rounded-[8px] shadow-md transition-all border-none"
+                className="w-full bg-[#B8962E] text-white hover:bg-[#a18225] h-14 text-[15px] font-medium rounded-[8px] shadow-md transition-all border-none flex items-center justify-center gap-2"
               >
                 Choisir la formule Premium
               </Button>
