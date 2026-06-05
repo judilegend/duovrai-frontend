@@ -1,189 +1,219 @@
-import { useLocation, useNavigate, Link } from "react-router-dom"
-import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Loader2, Lock, ArrowLeft } from "lucide-react";
+import { Button } from "../components/ui/button";
+import { Navbar } from "../components/Navbar";
+import { Footer } from "../components/Footer";
+
+interface UserFormData {
+  prenom1: string;
+  date1: string;
+  prenom2: string;
+  date2: string;
+  email: string;
+  offre: "essentiel" | "premium";
+}
 
 export function Checkout() {
-  const location = useLocation()
-  const navigate = useNavigate()
-  
-  // Default to Essentiel if navigated directly without state
-  const selectedPlan = location.state?.plan || 'essentiel'
-  const isPremium = selectedPlan === 'premium'
-  
-  const planName = isPremium ? "Premium" : "Essentiel"
-  const planPrice = isPremium ? "19,90" : "9,90"
-  
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [isSuccess, setIsSuccess] = useState(false)
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [formData, setFormData] = useState<UserFormData | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Scroll to top on mount
+  // Retrieve plan from navigation state or default to essential
+  const selectedPlan: "essentiel" | "premium" =
+    location.state?.plan || "essentiel";
+
+  const price = selectedPlan === "premium" ? 19.90 : 9.90;
+
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    // Scroll to top
+    window.scrollTo(0, 0);
 
-  const handlePayment = (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsProcessing(true)
-    
-    // Simulate API call
-    setTimeout(() => {
-      setIsProcessing(false)
-      setIsSuccess(true)
-    }, 2000)
-  }
+    // Retrieve form data from sessionStorage
+    const stored = sessionStorage.getItem("userFormData");
+    if (!stored) {
+      // If no birth info exists, user needs to fill out the form first
+      navigate("/", { replace: true });
+    } else {
+      setFormData(JSON.parse(stored));
+    }
+  }, [navigate]);
 
-  if (isSuccess) {
-    return (
-      <div className="min-h-screen bg-[#F9F3E3] flex flex-col items-center justify-center p-4">
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="bg-white p-8 sm:p-12 rounded-2xl shadow-xl max-w-md w-full text-center"
-        >
-          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="w-10 h-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#1A5C52] mb-4" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Paiement réussi !</h2>
-          <p className="text-gray-600 mb-8" style={{ fontFamily: "'Inter', sans-serif" }}>
-            Merci pour votre commande. Vous allez recevoir un email contenant les instructions pour remplir votre formulaire et obtenir votre analyse.
-          </p>
-          <button 
-            onClick={() => navigate('/')}
-            className="w-full bg-[#1A5C52] text-white py-3 rounded-lg font-medium hover:bg-[#14473e] transition-colors"
-          >
-            Retour à l'accueil
-          </button>
-        </motion.div>
-      </div>
-    )
+  const handlePayment = async () => {
+    if (!formData) return;
+    setLoading(true);
+    setError(null);
+
+    const payload = {
+      email: formData.email,
+      partner1_name: formData.prenom1,
+      partner1_birthdate: formData.date1,
+      partner2_name: formData.prenom2,
+      partner2_birthdate: formData.date2,
+      plan_type: selectedPlan.toUpperCase(), // Backend expects uppercase enum
+    };
+
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/stripe/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || "Erreur de communication avec le serveur.");
+      }
+
+      const data = await response.json();
+      if (data.checkout_url) {
+        // Clear session storage since we are proceeding to checkout
+        sessionStorage.removeItem("userFormData");
+        // Redirect to Stripe checkout (mock or real)
+        window.location.href = data.checkout_url;
+      } else {
+        throw new Error("URL de paiement non reçue.");
+      }
+    } catch (err: any) {
+      console.error("Payment initiation failed:", err);
+      setError(err.message || "Une erreur est survenue lors de l'initialisation du paiement.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!formData) {
+    return null;
   }
 
   return (
-    <div className="min-h-screen bg-white flex flex-col md:flex-row font-sans">
-      
-      {/* Left side: Order Summary */}
-      <div className="md:w-1/2 bg-[#F9F3E3] p-8 md:p-12 lg:p-20 flex flex-col justify-between border-r border-[#E8F2F0]">
-        <div>
-          <Link to="/" className="inline-flex items-center text-[#1A5C52] hover:underline mb-12">
-            <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Retour
-          </Link>
-          
-          <p className="text-sm uppercase tracking-wider text-gray-500 mb-2">Ton Cosmos • DuoVrai</p>
-          <h1 className="text-3xl sm:text-4xl text-[#1A5C52] mb-8" style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 700 }}>
-            Analyse de Compatibilité
-          </h1>
-          
-          <div className="space-y-6">
-            <div className="flex justify-between items-start">
-              <div>
-                <h3 className="font-semibold text-lg text-gray-900">Formule {planName}</h3>
-                <p className="text-gray-500 text-sm mt-1">Paiement unique</p>
-              </div>
-              <div className="text-xl font-medium text-gray-900">{planPrice} €</div>
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen flex flex-col bg-[#F9F3E3]">
+      <Navbar />
 
-        <div className="mt-12 pt-8 border-t border-gray-200">
-          <div className="flex justify-between items-center text-xl">
-            <span className="font-semibold text-gray-900">Total à payer</span>
-            <span className="font-bold text-gray-900">{planPrice} €</span>
-          </div>
-        </div>
-      </div>
+      <main className="flex-1 py-12 sm:py-16 flex items-center justify-center">
+        <div className="container mx-auto px-4 sm:px-6 max-w-2xl">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-x-2 text-sm text-[#1A5C52]/70 font-medium hover:text-[#1A5C52] transition-colors mb-8 cursor-pointer"
+          >
+            <ArrowLeft size={16} />
+            Retour aux offres
+          </button>
 
-      {/* Right side: Payment Form */}
-      <div className="md:w-1/2 p-8 md:p-12 lg:p-20 bg-white">
-        <div className="max-w-md mx-auto">
-          <h2 className="text-xl font-medium mb-6 text-gray-900">Coordonnées</h2>
-          
-          <form onSubmit={handlePayment} className="space-y-6">
-      
-            <h2 className="text-xl font-medium pt-4 mb-2 text-gray-900">Paiement</h2>
-            
-            <div className="bg-gray-50 p-4 rounded border border-gray-200 mb-4 flex items-center justify-between">
-              <div className="flex items-center gap-2 text-sm text-gray-600">
-                <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-                Paiement sécurisé simulé (Stripe)
-              </div>
-              <div className="flex gap-1">
-                <div className="w-8 h-5 bg-blue-600 rounded text-[8px] font-bold text-white flex items-center justify-center">VISA</div>
-                <div className="w-8 h-5 bg-red-500 rounded text-[8px] font-bold text-white flex items-center justify-center">MC</div>
-              </div>
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white rounded-[12px] border border-[#E8F2F0] p-8 sm:p-10 shadow-sm"
+          >
+            <div className="text-center mb-8 border-b border-[#E8F2F0] pb-6">
+              <span className="text-[10px] tracking-widest text-[#B8962E] font-bold uppercase mb-2 block">
+                Paiement Sécurisé
+              </span>
+              <h2
+                className="text-[32px] text-[#1A5C52] leading-tight mb-2"
+                style={{
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontWeight: 700,
+                }}
+              >
+                Finalisez votre commande
+              </h2>
+              <p className="text-[14px] text-gray-500">
+                Veuillez vérifier vos informations avant de procéder au paiement.
+              </p>
             </div>
 
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Numéro de carte</label>
-                <input 
-                  type="text" 
-                  required 
-                  className="w-full px-4 py-3 rounded border border-gray-300 focus:ring-2 focus:ring-[#1A5C52] focus:border-[#1A5C52] outline-none transition-all"
-                  placeholder="0000 0000 0000 0000"
-                />
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-[6px] text-red-700 text-sm">
+                {error}
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Date d'expiration</label>
-                  <input 
-                    type="text" 
-                    required 
-                    className="w-full px-4 py-3 rounded border border-gray-300 focus:ring-2 focus:ring-[#1A5C52] focus:border-[#1A5C52] outline-none transition-all"
-                    placeholder="MM/AA"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">CVC</label>
-                  <input 
-                    type="text" 
-                    required 
-                    className="w-full px-4 py-3 rounded border border-gray-300 focus:ring-2 focus:ring-[#1A5C52] focus:border-[#1A5C52] outline-none transition-all"
-                    placeholder="123"
-                  />
+            )}
+
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-xs uppercase tracking-wider text-[#1A5C52] font-semibold mb-4">
+                  Informations de l'analyse
+                </h3>
+                <div className="space-y-3 bg-[#E8F2F0]/20 rounded-[6px] p-4 border border-[#E8F2F0]/50">
+                  <div className="flex justify-between py-2 border-b border-[#E8F2F0]/40 text-sm">
+                    <span className="text-gray-500">Partenaire 1</span>
+                    <span className="font-semibold text-[#1A5C52]">
+                      {formData.prenom1} ({new Date(formData.date1).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })})
+                    </span>
+                  </div>
+                  <div className="flex justify-between py-2 border-b border-[#E8F2F0]/40 text-sm">
+                    <span className="text-gray-500">Partenaire 2</span>
+                    <span className="font-semibold text-[#1A5C52]">
+                      {formData.prenom2} ({new Date(formData.date2).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })})
+                    </span>
+                  </div>
+                  <div className="flex justify-between py-2 text-sm">
+                    <span className="text-gray-500">Destinataire (Email)</span>
+                    <span className="font-semibold text-[#1A5C52]">{formData.email}</span>
+                  </div>
                 </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Nom sur la carte</label>
-                <input 
-                  type="text" 
-                  required 
-                  className="w-full px-4 py-3 rounded border border-gray-300 focus:ring-2 focus:ring-[#1A5C52] focus:border-[#1A5C52] outline-none transition-all"
-                  placeholder="Titulaire de la carte"
-                />
-              </div>
-            </div>
 
-            <button 
-              type="submit" 
-              disabled={isProcessing}
-              className="w-full bg-[#1A5C52] text-white py-4 mt-6 rounded-lg font-medium text-lg hover:bg-[#14473e] transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center gap-2"
-            >
-              {isProcessing ? (
-                <>
-                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Traitement...
-                </>
-              ) : (
-                `Payer ${planPrice} €`
-              )}
-            </button>
-          </form>
-          
-          <p className="text-xs text-gray-400 text-center mt-6">
-            Ceci est une simulation pour le développement. Aucune carte n'est débitée.
-          </p>
+              <div>
+                <h3 className="text-xs uppercase tracking-wider text-[#1A5C52] font-semibold mb-4">
+                  Formule sélectionnée
+                </h3>
+                <div className="flex items-center justify-between p-4 border border-[#E8F2F0] rounded-[6px]">
+                  <div>
+                    <h4 className="font-bold text-[#1A5C52] capitalize">
+                      Formule {selectedPlan}
+                    </h4>
+                    <p className="text-xs text-gray-500">
+                      {selectedPlan === "premium"
+                        ? "Analyse amoureuse approfondie 12 pages, cycles de vie et rituels"
+                        : "Rapport de compatibilité fondamental 8 pages"}
+                    </p>
+                  </div>
+                  <span className="font-semibold text-lg text-[#1A5C52]" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                    {price.toFixed(2)} €
+                  </span>
+                </div>
+              </div>
+
+              <div className="border-t border-[#E8F2F0] pt-6 flex justify-between items-center">
+                <span className="font-bold text-[#1A5C52]">Total à payer</span>
+                <span className="font-bold text-2xl text-[#B8962E]" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                  {price.toFixed(2)} €
+                </span>
+              </div>
+
+              <Button
+                onClick={handlePayment}
+                disabled={loading}
+                className="w-full bg-[#1A5C52] text-white hover:bg-[#1A5C52]/90 h-14 text-[15px] font-medium rounded-[6px] shadow-md transition-all flex items-center justify-center gap-2 mt-8"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Traitement en cours...
+                  </>
+                ) : (
+                  <>
+                    <Lock className="w-4 h-4" />
+                    Payer {price.toFixed(2)} €
+                  </>
+                )}
+              </Button>
+
+              <p className="text-center text-xs text-gray-500 mt-4">
+                Paiement 100% sécurisé via Stripe. Facturation unique sans engagement.
+              </p>
+            </div>
+          </motion.div>
         </div>
-      </div>
+      </main>
+
+      <Footer />
     </div>
-  )
+  );
 }
