@@ -6,7 +6,7 @@ import { ReportPreview } from "./components/ReportPreview";
 import { Pricing } from "./components/Pricing";
 import { FormulaireSaisie } from "./components/FormulaireSaisie";
 import { Footer } from "./components/Footer";
-import { Success } from "./pages/Success";
+import { GenerationPage } from "./pages/GenerationPage";
 import { Cancel } from "./pages/Cancel";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import { PricingPage } from "./pages/PricingPage";
@@ -34,7 +34,7 @@ function App() {
       <div className="min-h-screen bg-white flex flex-col">
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/success" element={<Success />} />
+          <Route path="/success" element={<GenerationPage />} />
           <Route path="/retry" element={<Cancel />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/pricing-page" element={<PricingPage />} />
@@ -46,3 +46,4 @@ function App() {
 }
 
 export default App;
+
