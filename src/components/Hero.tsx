@@ -138,7 +138,7 @@ export function Hero() {
             size="lg"
             className="duovrai-btn bg-[#1A5C52] text-white hover:bg-[#1A5C52]/90 px-8 h-[52px] text-[15px] shadow-md group"
           >
-            Commencer l'analyse
+            <a href="#formulaire">Commencer l'analyse</a>
             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>
           <a
