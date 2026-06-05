@@ -49,8 +49,14 @@ export function useStripeCheckout() {
 
       const data = await response.json();
       if (data.checkout_url) {
-        sessionStorage.removeItem("userFormData");
-        // Instant redirection to Stripe
+        // Save order_id + session_id for post-payment polling
+        if (data.order_id) {
+          sessionStorage.setItem("duovrai_order_id", data.order_id);
+        }
+        if (data.session_id) {
+          sessionStorage.setItem("duovrai_session_id", data.session_id);
+        }
+        // Redirect to Stripe Checkout
         window.location.href = data.checkout_url;
       } else {
         throw new Error("URL de paiement Stripe non reçue.");
