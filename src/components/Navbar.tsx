@@ -44,7 +44,7 @@ export function Navbar() {
         {/* CTA Desktop */}
         <div className="hidden md:flex items-center gap-3">
           <Button className="duovrai-btn bg-[#1A5C52] text-white hover:bg-[#1A5C52]/90 shadow-sm">
-            Commencer
+            <a href="#formulaire">Commencer</a>
           </Button>
         </div>
 
@@ -82,14 +82,8 @@ export function Navbar() {
             ))}
           </nav>
           <div className="px-6 pt-4 flex flex-col gap-2">
-            <Button
-              variant="ghost"
-              className="duovrai-btn w-full text-[#1A5C52] hover:bg-[#E8F2F0]"
-            >
-              Connexion
-            </Button>
             <Button className="duovrai-btn w-full bg-[#1A5C52] text-white hover:bg-[#1A5C52]/90">
-              Analyser mon couple
+              <a href="#formulaire">Commencer</a>
             </Button>
           </div>
         </div>
