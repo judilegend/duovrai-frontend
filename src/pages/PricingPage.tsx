@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "../components/ui/button";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
+import { Stepper } from "../components/Stepper";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormData } from "../context/FormDataContext";
@@ -57,6 +58,7 @@ export function PricingPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#F9F3E3]">
       <Navbar />
+      <Stepper currentStep={2} />
 
       <main className="flex-1 py-12 sm:py-3 flex items-center justify-center">
         <div className="container mx-auto px-4 sm:px-6 w-full">
