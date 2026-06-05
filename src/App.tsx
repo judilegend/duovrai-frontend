@@ -6,7 +6,8 @@ import { ReportPreview } from "./components/ReportPreview";
 import { Pricing } from "./components/Pricing";
 import { FormulaireSaisie } from "./components/FormulaireSaisie";
 import { Footer } from "./components/Footer";
-import { Checkout } from "./pages/Checkout";
+import { Success } from "./pages/Success";
+import { Cancel } from "./pages/Cancel";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import { PricingPage } from "./pages/PricingPage";
 
@@ -32,7 +33,8 @@ function App() {
       <div className="min-h-screen bg-white flex flex-col">
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/success" element={<Success />} />
+          <Route path="/retry" element={<Cancel />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/pricing-page" element={<PricingPage />} />
         </Routes>
