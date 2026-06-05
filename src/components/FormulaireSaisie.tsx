@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { useFormData } from "../context/FormDataContext";
 import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -52,7 +53,8 @@ function validatePrenom(value: string): string | undefined {
 }
 
 export function FormulaireSaisie() {
-  const [form, setForm] = useState<FormData>({
+  const { formData, setFormData } = useFormData();
+  const [form, setForm] = useState<FormData>(formData || {
     prenom1: "",
     date1: "",
     prenom2: "",
@@ -130,8 +132,8 @@ export function FormulaireSaisie() {
 
     const hasErrors = Object.values(newErrors).some((e) => e !== undefined);
     if (!hasErrors) {
-      // Redirect to Stripe Checkout
-      console.log("Form valid, proceeding to checkout:", form);
+      // Store form data in context + sessionStorage, then go to pricing page
+      setFormData(form);
       sessionStorage.setItem("userFormData", JSON.stringify(form));
       navigate("/pricing-page");
     }
