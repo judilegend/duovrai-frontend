@@ -1,6 +1,6 @@
+import { Button } from "./ui/button";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-// import { Button } from "./ui/button";
-// import { useNavigate } from "react-router-dom";
 
 const essentialFeatures = [
   "Rapport PDF détaillé (8 pages)",
@@ -34,11 +34,11 @@ function StarBullet({ color = "#1A5C52" }: { color?: string }) {
 }
 
 export function Pricing() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  // const handleSelectPlan = (plan: 'essentiel' | 'premium') => {
-  //   navigate('/checkout', { state: { plan } });
-  // };
+  const handleSelectPlan = () => {
+    navigate("/pricing-page");
+  };
 
   return (
     <section id="pricing" className="py-20 sm:py-24 bg-[#F9F3E3]">
@@ -134,6 +134,14 @@ export function Pricing() {
                 </li>
               ))}
             </ul>
+
+            <Button
+              onClick={handleSelectPlan}
+              variant="outline"
+              className="w-full border-2 border-[#1A5C52] text-[#1A5C52] hover:bg-[#1A5C52] hover:text-white h-12 text-[14px] font-medium rounded-[6px] transition-all"
+            >
+              Choisir Essentiel
+            </Button>
           </motion.div>
 
           {/* ── Premium ── */}
@@ -227,6 +235,13 @@ export function Pricing() {
                 </li>
               ))}
             </ul>
+
+            <Button
+              onClick={handleSelectPlan}
+              className="w-full bg-[#B8962E] text-white hover:bg-[#a18225] h-12 text-[14px] font-medium rounded-[6px] shadow-sm transition-all border-none"
+            >
+              Choisir Premium
+            </Button>
           </motion.div>
         </div>
       </div>
