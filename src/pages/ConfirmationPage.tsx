@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormData } from "../context/FormDataContext";
 import { useStripeCheckout } from "../hooks/useStripeCheckout";
@@ -6,6 +6,7 @@ import { Button } from "../components/ui/button";
 import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
+import { Stepper } from "../components/Stepper";
 
 export function ConfirmationPage() {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ export function ConfirmationPage() {
       date2: "",
       email: "",
       offre: "essentiel" as const,
-    }
+    },
   );
 
   // If formData is missing, redirect to the entry form
@@ -48,6 +49,7 @@ export function ConfirmationPage() {
   return (
     <>
       <Navbar />
+      <Stepper currentStep={3} />
       <section className="min-h-screen flex flex-col items-center justify-center bg-[#F5FAF9] py-12">
         <div className="max-w-2xl w-full bg-white rounded-lg shadow-lg p-8">
           <h1 className="text-2xl font-bold text-[#1A5C52] mb-6 text-center">
@@ -121,9 +123,7 @@ export function ConfirmationPage() {
               <select
                 className="border-b border-gray-300 focus:outline-none flex-1 ml-2"
                 value={localData.offre}
-                onChange={(e) =>
-                  handleChange("offre", e.target.value as any)
-                }
+                onChange={(e) => handleChange("offre", e.target.value as any)}
               >
                 <option value="essentiel">Essentiel — 9,90€</option>
                 <option value="premium">Premium — 19,90€</option>
