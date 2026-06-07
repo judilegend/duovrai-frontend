@@ -21,10 +21,12 @@ export function Stepper({ currentStep }: StepperProps) {
           const stepNumber = index + 1;
           const isCompleted = stepNumber < currentStep;
           const isActive = stepNumber === currentStep;
-          const isPending = stepNumber > currentStep;
 
           return (
-            <div key={step.label} className="flex flex-col items-center relative z-10 flex-1">
+            <div
+              key={step.label}
+              className="flex flex-col items-center relative z-10 flex-1"
+            >
               {/* Connector line (before this step) */}
               {index > 0 && (
                 <div
@@ -37,7 +39,8 @@ export function Stepper({ currentStep }: StepperProps) {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                     className="h-full origin-left"
                     style={{
-                      backgroundColor: isCompleted || isActive ? "#1A5C52" : "#D1D5DB",
+                      backgroundColor:
+                        isCompleted || isActive ? "#1A5C52" : "#D1D5DB",
                     }}
                   />
                   {/* Background line */}
@@ -60,13 +63,13 @@ export function Stepper({ currentStep }: StepperProps) {
                   backgroundColor: isCompleted
                     ? "#1A5C52"
                     : isActive
-                    ? "#B8962E"
-                    : "#E5E7EB",
+                      ? "#B8962E"
+                      : "#E5E7EB",
                   boxShadow: isActive
                     ? "0 0 0 4px rgba(184, 150, 46, 0.25)"
                     : isCompleted
-                    ? "0 0 0 4px rgba(26, 92, 82, 0.15)"
-                    : "none",
+                      ? "0 0 0 4px rgba(26, 92, 82, 0.15)"
+                      : "none",
                 }}
               >
                 {isCompleted ? (
@@ -115,8 +118,8 @@ export function Stepper({ currentStep }: StepperProps) {
                   color: isCompleted
                     ? "#1A5C52"
                     : isActive
-                    ? "#B8962E"
-                    : "#9CA3AF",
+                      ? "#B8962E"
+                      : "#9CA3AF",
                 }}
               >
                 {/* Show short label on small screens */}
