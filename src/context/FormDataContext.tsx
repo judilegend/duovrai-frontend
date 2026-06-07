@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState } from "react";
+import type { ReactNode } from "react";
 
 interface FormData {
   prenom1: string;
@@ -6,7 +7,7 @@ interface FormData {
   prenom2: string;
   date2: string;
   email: string;
-  offre: 'essentiel' | 'premium';
+  offre: "essentiel" | "premium";
 }
 
 interface FormDataContextProps {
@@ -14,7 +15,9 @@ interface FormDataContextProps {
   setFormData: (data: FormData) => void;
 }
 
-const FormDataContext = createContext<FormDataContextProps | undefined>(undefined);
+const FormDataContext = createContext<FormDataContextProps | undefined>(
+  undefined,
+);
 
 export const FormDataProvider = ({ children }: { children: ReactNode }) => {
   const [formData, setFormDataState] = useState<FormData | null>(null);
@@ -33,7 +36,7 @@ export const FormDataProvider = ({ children }: { children: ReactNode }) => {
 export const useFormData = () => {
   const context = useContext(FormDataContext);
   if (!context) {
-    throw new Error('useFormData must be used within a FormDataProvider');
+    throw new Error("useFormData must be used within a FormDataProvider");
   }
   return context;
 };
