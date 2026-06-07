@@ -1,5 +1,3 @@
-import { Button } from "./ui/button";
-import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const essentialFeatures = [
@@ -34,12 +32,6 @@ function StarBullet({ color = "#1A5C52" }: { color?: string }) {
 }
 
 export function Pricing() {
-  const navigate = useNavigate();
-
-  const handleSelectPlan = () => {
-    navigate("/pricing-page");
-  };
-
   return (
     <section id="pricing" className="py-20 sm:py-24 bg-[#F9F3E3]">
       <div className="container mx-auto px-4 sm:px-6">
@@ -227,7 +219,6 @@ export function Pricing() {
                 </li>
               ))}
             </ul>
-
           </motion.div>
         </div>
       </div>
