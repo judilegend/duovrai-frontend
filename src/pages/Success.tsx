@@ -9,10 +9,19 @@ import { Footer } from "../components/Footer";
 export function Success() {
   const navigate = useNavigate();
 
+  const orderId = sessionStorage.getItem("duovrai_order_id");
+
   useEffect(() => {
     // Scroll to top
     window.scrollTo(0, 0);
-  }, []);
+
+    if (orderId) {
+      const timer = window.setTimeout(() => {
+        navigate("/generation");
+      }, 1500);
+      return () => window.clearTimeout(timer);
+    }
+  }, [navigate, orderId]);
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F9F3E3]">
@@ -48,7 +57,7 @@ export function Success() {
             <span className="text-[10px] tracking-widest text-[#B8962E] font-bold uppercase mb-2 block">
               Paiement Réussi
             </span>
-            
+
             <h2
               className="text-[32px] sm:text-[36px] text-[#1A5C52] leading-tight mb-4"
               style={{
@@ -60,7 +69,9 @@ export function Success() {
             </h2>
 
             <p className="text-[15px] text-gray-600 leading-relaxed mb-8 max-w-md mx-auto">
-              Votre paiement a été validé avec succès. Notre intelligence artificielle s'occupe de générer votre portrait et analyse de compatibilité amoureuse premium.
+              Votre paiement a été validé avec succès. Notre intelligence
+              artificielle s'occupe de générer votre portrait et analyse de
+              compatibilité amoureuse premium.
             </p>
 
             <div className="rounded-[6px] border border-[#E8F2F0] bg-[#E8F2F0]/20 p-6 mb-8 text-left flex items-start gap-4">
@@ -70,19 +81,30 @@ export function Success() {
                   Vérifiez votre boîte mail
                 </h4>
                 <p className="text-xs text-gray-500 leading-relaxed">
-                  Votre rapport PDF personnalisé de 8 à 12 pages vous a été envoyé par e-mail. 
-                  L'envoi prend généralement entre 1 et 3 minutes. Pensez également à vérifier votre dossier de courrier indésirable (spams).
+                  Votre rapport PDF personnalisé de 8 à 12 pages vous a été
+                  envoyé par e-mail. L'envoi prend généralement entre 1 et 3
+                  minutes. Pensez également à vérifier votre dossier de courrier
+                  indésirable (spams).
                 </p>
               </div>
             </div>
 
-            <Button
-              onClick={() => navigate("/")}
-              className="w-full bg-[#1A5C52] text-white hover:bg-[#1A5C52]/90 h-12 text-[14px] font-medium rounded-[6px] shadow-sm transition-all flex items-center justify-center gap-2 group"
-            >
-              Retourner à l'accueil
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
+            <div className="grid gap-4">
+              <Button
+                onClick={() => navigate("/generation")}
+                className="w-full bg-[#1A5C52] text-white hover:bg-[#1A5C52]/90 h-12 text-[14px] font-medium rounded-[6px] shadow-sm transition-all flex items-center justify-center gap-2 group"
+              >
+                Voir l'état de génération
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => navigate("/")}
+                className="w-full border-[#1A5C52] text-[#1A5C52] hover:bg-[#E8F2F0] h-12 text-[14px] font-medium rounded-[6px] shadow-sm transition-all"
+              >
+                Retourner à l'accueil
+              </Button>
+            </div>
           </motion.div>
         </div>
       </main>
