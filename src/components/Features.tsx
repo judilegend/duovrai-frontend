@@ -1,7 +1,10 @@
 import { motion } from "framer-motion";
+import { SectionLabel } from "./ui/SectionLabel";
 
 const features = [
   {
+    badge: "01",
+    chip: "Émotion",
     icon: (
       // Anneaux entrelacés fins (lien et union)
       <svg
@@ -27,6 +30,8 @@ const features = [
       "Plongez dans les profondeurs de vos âmes. Découvrez comment vos sensibilités s'accordent et comment cultiver une intimité inébranlable.",
   },
   {
+    badge: "02",
+    chip: "Astrologie",
     icon: (
       // Constellation céleste
       <svg
@@ -53,6 +58,8 @@ const features = [
       "Vos cartes astrales entrelacées révèlent la fluidité de vos échanges. Déjouez les malentendus et élevez votre communication.",
   },
   {
+    badge: "03",
+    chip: "Croissance",
     icon: (
       // Végétal délicat (croissance, nature)
       <svg
@@ -87,19 +94,16 @@ export function Features() {
       {/* Subtle organic texture */}
       <div className="absolute inset-0 opacity-[0.02] bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] pointer-events-none" />
 
-      <div className="container relative z-10 mx-auto px-4 sm:px-6">
+      <div className="container relative z-10 mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-20 sm:mb-28">
+        <div className="text-center max-w-2xl mx-auto mb-20 sm:mb-12">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex items-center justify-center gap-3 mb-6"
+            className="mb-6 flex justify-center"
           >
-            <div className="h-px w-8 bg-[#B8962E]/50" />
-            {/* Utilisation de ta classe duovrai-label */}
-            <p className="duovrai-label">Ce que révèle le rapport</p>
-            <div className="h-px w-8 bg-[#B8962E]/50" />
+            <SectionLabel>Ce que révèle le rapport</SectionLabel>
           </motion.div>
 
           <motion.h2
@@ -147,35 +151,52 @@ export function Features() {
                 ease: "easeOut",
               }}
               // {/* Ajustement du fond des cartes pour du Light Mode avec ombre douce */}
-              className="relative group p-10 rounded-[24px] bg-white border border-[#B8962E]/10 hover:border-[#B8962E]/40 transition-all duration-500 overflow-hidden shadow-2xl hover:shadow-[0_20px_40px_rgba(26,92,82,0.1)]"
+              className="group relative overflow-hidden rounded-[28px] border border-[#E8F2F0] bg-[linear-gradient(180deg,#ffffff_0%,#fbfdfd_100%)] p-6 shadow-[0_18px_40px_-24px_rgba(26,92,82,0.35)] transition-all duration-500 hover:-translate-y-1 hover:border-[#B8962E]/40 hover:shadow-[0_28px_52px_-30px_rgba(26,92,82,0.45)] sm:p-8"
             >
-              {/* Inner ambient glow on hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#B8962E]/0 to-[#B8962E]/[0.04] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#B8962E]/70 to-transparent opacity-0 transition duration-500 group-hover:opacity-100" />
+              <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-[#B8962E]/8 blur-2xl transition duration-500 group-hover:scale-110" />
+              <div className="absolute -bottom-8 -left-6 h-24 w-24 rounded-full bg-[#1A5C52]/8 blur-2xl transition duration-500 group-hover:scale-110" />
 
-              <div className="relative z-10">
-                {/* Pastille de l'icône modifiée pour s'accorder au fond clair (Vert opacité légère en fond) */}
-                <div className="mb-8 w-16 h-16 inline-flex items-center justify-center rounded-full bg-[#1A5C52]/5 border border-[#B8962E]/20 shadow-[0_4px_10px_rgba(184,150,46,0.08)] group-hover:shadow-[0_4px_20px_rgba(184,150,46,0.2)] transition-all duration-500">
-                  {feature.icon}
+              <div className="relative z-10 flex h-full flex-col gap-5">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="inline-flex items-center rounded-full border border-[#E8F2F0] bg-[#F8FBFA] px-3 py-1 text-[11px] uppercase tracking-[0.25em] text-[#1A5C52] shadow-sm">
+                    {feature.chip}
+                  </div>
+                  <span className="text-sm font-semibold text-[#B8962E]">
+                    {feature.badge}
+                  </span>
                 </div>
 
-                {/* H3 — Noir Profond (#1A1A1A) — Montserrat Semi-bold (font-semibold = 600) */}
-                <h3
-                  className="text-[21px] text-[#1A1A1A] font-semibold mb-4 tracking-wide leading-[1.3]"
-                  style={{ fontFamily: "'Montserrat', Arial, sans-serif" }}
-                >
-                  {feature.title}
-                </h3>
+                <div className="flex items-center gap-4">
+                  <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-[#B8962E]/20 bg-gradient-to-br from-[#F9F3E3] via-white to-[#E8F2F0] shadow-[0_10px_18px_-12px_rgba(184,150,46,0.55)] transition duration-500 group-hover:-translate-y-0.5 group-hover:shadow-[0_14px_24px_-12px_rgba(184,150,46,0.65)]">
+                    {feature.icon}
+                  </div>
+                  <div className="h-px flex-1 bg-gradient-to-r from-[#B8962E]/30 via-transparent to-transparent" />
+                </div>
 
-                {/* Paragraphe de carte — Gris (#555555) — Inter Regular */}
-                <p
-                  className="text-[15px] text-[#555555] leading-[1.65]"
-                  style={{
-                    fontFamily: "'Inter', Calibri, sans-serif",
-                    fontWeight: 400,
-                  }}
-                >
-                  {feature.description}
-                </p>
+                <div>
+                  <h3
+                    className="mb-3 text-[20px] font-semibold leading-[1.25] tracking-[0.01em] text-[#1A1A1A] sm:text-[21px]"
+                    style={{ fontFamily: "'Montserrat', Arial, sans-serif" }}
+                  >
+                    {feature.title}
+                  </h3>
+
+                  <p
+                    className="text-[14px] leading-[1.6] text-[#555555] sm:text-[15px]"
+                    style={{
+                      fontFamily: "'Inter', Calibri, sans-serif",
+                      fontWeight: 400,
+                    }}
+                  >
+                    {feature.description}
+                  </p>
+                </div>
+
+                <div className="mt-auto flex items-center justify-between rounded-2xl border border-[#E8F2F0] bg-[#F8FBFA] px-3 py-2 text-[11px] uppercase tracking-[0.2em] text-[#1A5C52]">
+                  <span>Insight premium</span>
+                  <span className="text-[#B8962E]">+ profondeur</span>
+                </div>
               </div>
             </motion.div>
           ))}
