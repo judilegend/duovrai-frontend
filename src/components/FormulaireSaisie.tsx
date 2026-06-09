@@ -1,9 +1,11 @@
-import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-import { useFormData } from "../context/FormDataContext";
-import { Button } from "./ui/button";
-import { ArrowRight } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { ArrowRight, ShieldCheck } from "lucide-react";
+import { Button } from "./ui/button";
+import { FormField } from "./ui/FormField";
+import { useFormData } from "../context/FormDataContext";
+import { SectionLabel } from "./ui/SectionLabel";
 interface FormData {
   prenom1: string;
   date1: string;
@@ -54,44 +56,24 @@ function validatePrenom(value: string): string | undefined {
 
 export function FormulaireSaisie() {
   const { formData, setFormData } = useFormData();
-  const [form, setForm] = useState<FormData>(formData || {
-    prenom1: "",
-    date1: "",
-    prenom2: "",
-    date2: "",
-    email: "",
-    offre: "premium",
-  });
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState<FormData>(
+    formData || {
+      prenom1: "",
+      date1: "",
+      prenom2: "",
+      date2: "",
+      email: "",
+      offre: "premium",
+    },
+  );
 
   const [errors, setErrors] = useState<FieldErrors>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
-  const [animateTrigger, setAnimateTrigger] = useState(false);
-  const navigate = useNavigate();
-  const sectionRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    const node = sectionRef.current;
-    if (!node) return;
-
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setAnimateTrigger(true);
-          } else {
-            setAnimateTrigger(false);
-          }
-        });
-      },
-      { threshold: 0.5 },
-    );
-
-    obs.observe(node);
-    return () => obs.disconnect();
-  }, []);
   function handleChange(field: keyof FormData, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
-    // Inline validation on change after field has been touched
     if (touched[field]) {
       validateField(field, value);
     }
@@ -113,7 +95,6 @@ export function FormulaireSaisie() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // Validate all fields
     const newErrors: FieldErrors = {
       prenom1: validatePrenom(form.prenom1),
       date1: validateDate(form.date1),
@@ -132,7 +113,6 @@ export function FormulaireSaisie() {
 
     const hasErrors = Object.values(newErrors).some((e) => e !== undefined);
     if (!hasErrors) {
-      // Store form data in context + sessionStorage, then go to pricing page
       setFormData(form);
       sessionStorage.setItem("userFormData", JSON.stringify(form));
       navigate("/pricing-page");
@@ -140,45 +120,40 @@ export function FormulaireSaisie() {
   }
 
   return (
-    <section
-      id="formulaire"
-      className="py-20 sm:py-24 bg-white"
-      ref={sectionRef}
-    >
+    <section id="formulaire" className="py-16 sm:py-24 bg-white">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-5xl mx-auto">
-          {/* ── Left: Text Section ── */}
+          {/* Left: Text Section */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="flex flex-col gap-6"
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.45, ease: "easeOut" }}
+            className="order-2 flex flex-col gap-6 lg:order-1"
           >
             <div>
-              <p className="duovrai-label text-[12px] mb-4">
-                Découvrez votre alchimie
-              </p>
-              <h2 className="text-[36px] sm:text-[44px] leading-[1.2] mb-4">
-                Prêt à explorer{" "}
-                <span className="text-[#1A5C52]">votre destinée</span> ensemble
-                ?
+              <SectionLabel>Découvrez votre alchimie</SectionLabel>
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#1A5C52] mb-4 leading-tight">
+                Prêt à explorer votre destinée ensemble ?
               </h2>
-              <p className="text-[16px] leading-relaxed text-[#555555]">
-                En quelques clics, lancez l'analyse intelligente de votre
+              <p className="text-base text-gray-600 leading-relaxed sm:text-lg">
+                En quelques clics, lancez l’analyse intelligente de votre
                 couple. Notre système révèle les harmonies cachées et les défis
-                à transformer en forces.
+                à transformer en forces, avec un rendu clair et premium.
               </p>
             </div>
 
-            <div className="space-y-4 mt-6">
+            <div className="space-y-3 mt-6">
               {[
                 "Analyse personnalisée en temps réel",
                 "Rapport PDF de 8–12 pages",
                 "Conseils astrologiques pointus",
                 "Accès immédiat après paiement",
               ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3">
+                <div
+                  key={i}
+                  className="stagger-item flex items-start gap-3 animate-slide-up"
+                >
                   <svg
                     className="w-5 h-5 text-[#B8962E] shrink-0 mt-0.5"
                     viewBox="0 0 12 12"
@@ -186,39 +161,40 @@ export function FormulaireSaisie() {
                   >
                     <path d="M6 0L7.2 4.8L12 6L7.2 7.2L6 12L4.8 7.2L0 6L4.8 4.8L6 0Z" />
                   </svg>
-                  <span className="text-[15px] text-[#555555]">{item}</span>
+                  <span className="text-sm sm:text-base text-gray-600">
+                    {item}
+                  </span>
                 </div>
               ))}
             </div>
           </motion.div>
 
-          {/* ── Right: Form with RotateY Animation ── */}
+          {/* Right: Form Section */}
           <motion.div
-            initial={{ opacity: 0, rotateY: 90 }}
-            animate={
-              animateTrigger
-                ? { opacity: 1, rotateY: 0 }
-                : { opacity: 0, rotateY: 90 }
-            }
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            style={{ perspective: 1000 }}
-            className="w-full"
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.55, delay: 0.08, ease: "easeOut" }}
+            className="order-1 w-full lg:order-2"
           >
-            <div className="text-center mb-8">
-              <p className="duovrai-label text-[12px] mb-2">Votre analyse</p>
-              <h3 className="text-[28px] sm:text-[32px] mb-2">
+            <div className="mb-6 text-center">
+              <SectionLabel>Votre analyse</SectionLabel>
+              <h3 className="mt-3 text-2xl font-bold text-[#1A5C52] sm:text-3xl">
                 Démarrez maintenant
               </h3>
+              <p className="mt-2 text-sm text-gray-600">
+                Un formulaire simple, lisible et optimisé pour mobile.
+              </p>
             </div>
 
             <form
               onSubmit={handleSubmit}
-              className="bg-[#E8F2F0]/30 border border-[#E8F2F0] rounded-[6px] p-6 sm:p-8 space-y-8"
+              className="rounded-[28px] border border-[#E8F2F0] bg-white/95 p-5 shadow-[0_18px_50px_-30px_rgba(26,92,82,0.45)] backdrop-blur sm:p-7"
               noValidate
             >
-              {/* ── Personne 1 ── */}
+              {/* Personne 1 */}
               <fieldset className="space-y-4">
-                <legend className="duovrai-label text-[11px] flex items-center gap-2 mb-1">
+                <legend className="text-xs uppercase tracking-widest font-semibold text-[#1A5C52] flex items-center gap-2 mb-2">
                   <svg
                     className="w-3 h-3 text-[#B8962E]"
                     viewBox="0 0 12 12"
@@ -229,79 +205,32 @@ export function FormulaireSaisie() {
                   Personne 1
                 </legend>
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label
-                      htmlFor="prenom1"
-                      className="block text-[13px] text-[#555555] mb-1.5"
-                      style={{
-                        fontFamily: "'Montserrat', Arial, sans-serif",
-                        fontWeight: 500,
-                      }}
-                    >
-                      Prénom
-                    </label>
-                    <input
-                      id="prenom1"
-                      type="text"
-                      value={form.prenom1}
-                      onChange={(e) => handleChange("prenom1", e.target.value)}
-                      onBlur={() => handleBlur("prenom1")}
-                      placeholder="Ex : Emma"
-                      className={`w-full h-11 px-4 rounded-[6px] border bg-white text-[15px] outline-none transition-colors focus:ring-2 focus:ring-[#1A5C52]/20 ${
-                        errors.prenom1 && touched.prenom1
-                          ? "border-red-400"
-                          : "border-[#E8F2F0] focus:border-[#1A5C52]"
-                      }`}
-                      style={{ fontFamily: "'Inter', Calibri, sans-serif" }}
-                    />
-                    {errors.prenom1 && touched.prenom1 && (
-                      <p
-                        className="text-red-500 text-[12px] mt-1"
-                        style={{ fontFamily: "'Inter', Calibri, sans-serif" }}
-                      >
-                        {errors.prenom1}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="date1"
-                      className="block text-[13px] text-[#555555] mb-1.5"
-                      style={{
-                        fontFamily: "'Montserrat', Arial, sans-serif",
-                        fontWeight: 500,
-                      }}
-                    >
-                      Date de naissance
-                    </label>
-                    <input
-                      id="date1"
-                      type="date"
-                      value={form.date1}
-                      onChange={(e) => handleChange("date1", e.target.value)}
-                      onBlur={() => handleBlur("date1")}
-                      className={`w-full h-11 px-4 rounded-[6px] border bg-white text-[15px] outline-none transition-colors focus:ring-2 focus:ring-[#1A5C52]/20 ${
-                        errors.date1 && touched.date1
-                          ? "border-red-400"
-                          : "border-[#E8F2F0] focus:border-[#1A5C52]"
-                      }`}
-                      style={{ fontFamily: "'Inter', Calibri, sans-serif" }}
-                    />
-                    {errors.date1 && touched.date1 && (
-                      <p
-                        className="text-red-500 text-[12px] mt-1"
-                        style={{ fontFamily: "'Inter', Calibri, sans-serif" }}
-                      >
-                        {errors.date1}
-                      </p>
-                    )}
-                  </div>
+                  <FormField
+                    label="Prénom"
+                    placeholder="Ex : Emma"
+                    value={form.prenom1}
+                    error={errors.prenom1}
+                    touched={touched.prenom1}
+                    onChange={(val) => handleChange("prenom1", val)}
+                    onBlur={() => handleBlur("prenom1")}
+                    required
+                  />
+                  <FormField
+                    label="Date de naissance"
+                    type="date"
+                    value={form.date1}
+                    error={errors.date1}
+                    touched={touched.date1}
+                    onChange={(val) => handleChange("date1", val)}
+                    onBlur={() => handleBlur("date1")}
+                    required
+                  />
                 </div>
               </fieldset>
 
-              {/* ── Personne 2 ── */}
+              {/* Personne 2 */}
               <fieldset className="space-y-4">
-                <legend className="duovrai-label text-[11px] flex items-center gap-2 mb-1">
+                <legend className="text-xs uppercase tracking-widest font-semibold text-[#1A5C52] flex items-center gap-2 mb-2">
                   <svg
                     className="w-3 h-3 text-[#B8962E]"
                     viewBox="0 0 12 12"
@@ -312,128 +241,56 @@ export function FormulaireSaisie() {
                   Personne 2
                 </legend>
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label
-                      htmlFor="prenom2"
-                      className="block text-[13px] text-[#555555] mb-1.5"
-                      style={{
-                        fontFamily: "'Montserrat', Arial, sans-serif",
-                        fontWeight: 500,
-                      }}
-                    >
-                      Prénom
-                    </label>
-                    <input
-                      id="prenom2"
-                      type="text"
-                      value={form.prenom2}
-                      onChange={(e) => handleChange("prenom2", e.target.value)}
-                      onBlur={() => handleBlur("prenom2")}
-                      placeholder="Ex : Lucas"
-                      className={`w-full h-11 px-4 rounded-[6px] border bg-white text-[15px] outline-none transition-colors focus:ring-2 focus:ring-[#1A5C52]/20 ${
-                        errors.prenom2 && touched.prenom2
-                          ? "border-red-400"
-                          : "border-[#E8F2F0] focus:border-[#1A5C52]"
-                      }`}
-                      style={{ fontFamily: "'Inter', Calibri, sans-serif" }}
-                    />
-                    {errors.prenom2 && touched.prenom2 && (
-                      <p
-                        className="text-red-500 text-[12px] mt-1"
-                        style={{ fontFamily: "'Inter', Calibri, sans-serif" }}
-                      >
-                        {errors.prenom2}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="date2"
-                      className="block text-[13px] text-[#555555] mb-1.5"
-                      style={{
-                        fontFamily: "'Montserrat', Arial, sans-serif",
-                        fontWeight: 500,
-                      }}
-                    >
-                      Date de naissance
-                    </label>
-                    <input
-                      id="date2"
-                      type="date"
-                      value={form.date2}
-                      onChange={(e) => handleChange("date2", e.target.value)}
-                      onBlur={() => handleBlur("date2")}
-                      className={`w-full h-11 px-4 rounded-[6px] border bg-white text-[15px] outline-none transition-colors focus:ring-2 focus:ring-[#1A5C52]/20 ${
-                        errors.date2 && touched.date2
-                          ? "border-red-400"
-                          : "border-[#E8F2F0] focus:border-[#1A5C52]"
-                      }`}
-                      style={{ fontFamily: "'Inter', Calibri, sans-serif" }}
-                    />
-                    {errors.date2 && touched.date2 && (
-                      <p
-                        className="text-red-500 text-[12px] mt-1"
-                        style={{ fontFamily: "'Inter', Calibri, sans-serif" }}
-                      >
-                        {errors.date2}
-                      </p>
-                    )}
-                  </div>
+                  <FormField
+                    label="Prénom"
+                    placeholder="Ex : Lucas"
+                    value={form.prenom2}
+                    error={errors.prenom2}
+                    touched={touched.prenom2}
+                    onChange={(val) => handleChange("prenom2", val)}
+                    onBlur={() => handleBlur("prenom2")}
+                    required
+                  />
+                  <FormField
+                    label="Date de naissance"
+                    type="date"
+                    value={form.date2}
+                    error={errors.date2}
+                    touched={touched.date2}
+                    onChange={(val) => handleChange("date2", val)}
+                    onBlur={() => handleBlur("date2")}
+                    required
+                  />
                 </div>
               </fieldset>
 
-              {/* ── E-mail ── */}
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-[13px] text-[#555555] mb-1.5"
-                  style={{
-                    fontFamily: "'Montserrat', Arial, sans-serif",
-                    fontWeight: 500,
-                  }}
-                >
-                  Adresse e-mail (pour recevoir le PDF)
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  value={form.email}
-                  onChange={(e) => handleChange("email", e.target.value)}
-                  onBlur={() => handleBlur("email")}
-                  placeholder="votre@email.com"
-                  className={`w-full h-11 px-4 rounded-[6px] border bg-white text-[15px] outline-none transition-colors focus:ring-2 focus:ring-[#1A5C52]/20 ${
-                    errors.email && touched.email
-                      ? "border-red-400"
-                      : "border-[#E8F2F0] focus:border-[#1A5C52]"
-                  }`}
-                  style={{ fontFamily: "'Inter', Calibri, sans-serif" }}
-                />
-                {errors.email && touched.email && (
-                  <p
-                    className="text-red-500 text-[12px] mt-1"
-                    style={{ fontFamily: "'Inter', Calibri, sans-serif" }}
-                  >
-                    {errors.email}
-                  </p>
-                )}
-              </div>
+              {/* Email */}
+              <FormField
+                label="Adresse e-mail (pour recevoir le PDF)"
+                type="email"
+                placeholder="votre@email.com"
+                value={form.email}
+                error={errors.email}
+                touched={touched.email}
+                onChange={(val) => handleChange("email", val)}
+                onBlur={() => handleBlur("email")}
+                required
+              />
 
-              {/* ── Submit ── */}
+              {/* Submit */}
               <Button
                 type="submit"
                 size="lg"
-                className="duovrai-btn w-full bg-[#1A5C52] text-white hover:bg-[#1A5C52]/90 h-[52px] text-[15px] shadow-md group"
+                className="duovrai-btn group h-12 w-full bg-[#1A5C52] text-base font-semibold text-white shadow-lg shadow-[#1A5C52]/10 transition-all hover:-translate-y-0.5 hover:bg-[#173F39] sm:h-14"
               >
                 Procéder au paiement
-                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
 
-              <p
-                className="text-center text-[12px] text-[#555555]/60"
-                style={{ fontFamily: "'Inter', Calibri, sans-serif" }}
-              >
-                Paiement sécurisé par Stripe. Aucun abonnement.
-              </p>
+              <div className="flex items-center justify-center gap-2 rounded-2xl border border-[#E8F2F0] bg-[#F9FCFB] px-3 py-2 text-xs text-gray-600 sm:text-sm">
+                <ShieldCheck className="h-4 w-4 text-[#B8962E]" />
+                Paiement sécurisé par Stripe · Aucun abonnement.
+              </div>
             </form>
           </motion.div>
         </div>
