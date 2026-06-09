@@ -1,30 +1,6 @@
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
 
 export function ReportPreview() {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setInView(true);
-            // smooth scroll to center the section every time it becomes visible
-            node.scrollIntoView({ behavior: "smooth", block: "center" });
-          } else {
-            setInView(false);
-          }
-        });
-      },
-      { threshold: 0.5 },
-    );
-
-    obs.observe(node);
-    return () => obs.disconnect();
-  }, []);
   return (
     <section className="relative py-24 sm:py-36 bg-[#1A5C52] overflow-hidden">
       {/* Background Ambience - Warm/Gold intimately lit */}
@@ -32,15 +8,11 @@ export function ReportPreview() {
       <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-black mix-blend-multiply filter blur-[150px] opacity-60 pointer-events-none" />
 
       <motion.div
-        ref={ref}
-        initial={{ opacity: 0, scale: 0.98, y: 12 }}
-        animate={
-          inView
-            ? { opacity: 1, scale: 1, y: 0 }
-            : { opacity: 0, scale: 0.98, y: 12 }
-        }
-        transition={{ duration: 0.7, ease: "easeOut" }}
-        className="container relative z-10 mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-16 lg:gap-24 items-center"
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.55, ease: "easeOut" }}
+        className="container relative z-10 mx-auto grid items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16"
       >
         {/* ── Left: Glassmorphic PDF Mockup ── */}
         <motion.div
@@ -48,7 +20,7 @@ export function ReportPreview() {
           whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="relative order-2 lg:order-1"
+          className="relative order-2 mx-auto w-full max-w-[420px] lg:order-1"
           style={{ perspective: 1000 }}
         >
           {/* Lueur dorée intime (bougie) derrière le rapport */}
@@ -155,7 +127,7 @@ export function ReportPreview() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="flex flex-col items-start gap-6 order-1 lg:order-2"
+          className="order-1 flex flex-col items-start gap-6 text-left lg:order-2"
         >
           <div className="flex items-center gap-3">
             <div className="h-px w-8 bg-[#B8962E]" />
