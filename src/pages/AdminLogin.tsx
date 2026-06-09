@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAdminAuth } from "../context/AdminAuthContext";
-import { Navbar } from "../components/Navbar";
+// import { Navbar } from "../components/Navbar";
 
 export function AdminLogin() {
   const [email, setEmail] = useState("");
