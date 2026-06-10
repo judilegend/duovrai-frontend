@@ -64,12 +64,12 @@ export function Hero() {
         <img
           src="/flower (1).png"
           alt="flower "
-          className="w-20 h-20 blur-[5px] absolute lg:top-[15%] lg:left-[20%] left-[15%] top-[15%]  opacity-60 "
+          className="w-20 h-20 blur-[5px] max-md:hidden absolute lg:top-[15%] lg:left-[20%] left-[15%] top-[15%]  opacity-60 "
         />
         <img
           src="/flower (1).png"
           alt="flower "
-          className="w-20 h-20 blur-[5px] absolute lg:top-[25%] lg:left-[25%] left-[15%] top-[15%]  opacity-30 "
+          className="w-20 h-20 blur-[5px] absolute  max-md:hidden lg:top-[25%] lg:left-[25%] left-[15%] top-[15%]  opacity-30 "
         />
         {/* Petites étoiles cardinales */}
         <svg
@@ -111,7 +111,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-[36px] sm:text-[40px] lg:text-[60px] mb-6 font-bold"
+          className="text-[36px] sm:text-[40px] lg:text-[60px] mb-6 font-extrabold "
         >
           Découvrez l'alchimie <br className="hidden sm:block" />
           de votre relation
