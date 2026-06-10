@@ -240,7 +240,7 @@ export function FormulaireSaisie() {
                   </svg>
                   Personne 2
                 </legend>
-                <div className="grid sm:grid-cols-2 gap-4">
+                <div className="grid sm:grid-cols-2 gap-4 ">
                   <FormField
                     label="Prénom"
                     placeholder="Ex : Lucas"
@@ -281,7 +281,7 @@ export function FormulaireSaisie() {
               <Button
                 type="submit"
                 size="lg"
-                className="duovrai-btn group h-12 w-full bg-[#1A5C52] text-base font-semibold text-white shadow-lg shadow-[#1A5C52]/10 transition-all hover:-translate-y-0.5 hover:bg-[#173F39] sm:h-14"
+                className="duovrai-btn group max-md:mt-5 h-12 w-full bg-[#1A5C52] text-base font-semibold text-white shadow-lg shadow-[#1A5C52]/10 transition-all hover:-translate-y-0.5 hover:bg-[#173F39] sm:h-14"
               >
                 Procéder au paiement
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
