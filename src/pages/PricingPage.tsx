@@ -60,7 +60,7 @@ export function PricingPage() {
       <Navbar />
       <Stepper currentStep={2} />
 
-      <main className="flex-1 py-12 sm:py-3 flex items-center justify-center">
+      <main className="flex-1 py-2 sm:py-3 flex items-center justify-center">
         <div className="container mx-auto px-4 sm:px-6 w-full">
           <div className="text-center max-w-2xl mx-auto mb-5">
             <motion.h2
