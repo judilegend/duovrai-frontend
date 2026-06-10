@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useFormData } from "../context/FormDataContext";
 import { useStripeCheckout } from "../hooks/useStripeCheckout";
 import { Button } from "../components/ui/button";
-import { ArrowLeft, ArrowRight, Loader2, Check, Edit2 } from "lucide-react";
+import { Edit2 } from "lucide-react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { Stepper } from "../components/Stepper";
@@ -48,9 +48,9 @@ export function ConfirmationPage() {
     handleSelectPlan(localData.offre);
   };
 
-  const getPriceDisplay = () => {
-    return localData.offre === "premium" ? "19,90€" : "9,90€";
-  };
+  // const getPriceDisplay = () => {
+  //   return localData.offre === "premium" ? "19,90€" : "9,90€";
+  // };
 
   // const getOfferName = () => {
   //   return localData.offre === "premium" ? "Premium" : "Essentiel";
@@ -61,7 +61,7 @@ export function ConfirmationPage() {
       <Navbar />
       <Stepper currentStep={3} />
       <section className="min-h-screen flex flex-col bg-gradient-to-br from-[#F5FAF9] to-[#E8F2F0] px-4 py-4 sm:px-6 sm:py-6">
-        <div className="flex-1 flex items-center justify-center w-full">
+        <div className="flex-1 flex items-start  justify-center w-full">
           <div className="w-full max-w-2xl">
             {/* Main Card - Minimal */}
             <div className="bg-white rounded-xl shadow-md overflow-hidden mb-4">
