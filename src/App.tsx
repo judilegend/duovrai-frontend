@@ -20,6 +20,7 @@ import ConfirmationPage from "./pages/ConfirmationPage";
 import GenerationPage from "./pages/GenerationPage";
 import { NotFound } from "./pages/NotFound";
 import { AdminAuthProvider } from "./context/AdminAuthContext";
+import { ScrollToTopButton } from "./components/ui/ScrollToTopButton";
 
 function LandingPage() {
   return (
@@ -57,6 +58,7 @@ function App() {
             <Route path="/generation" element={<GenerationPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <ScrollToTopButton />
         </div>
       </Router>
     </AdminAuthProvider>
