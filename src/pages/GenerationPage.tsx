@@ -94,7 +94,7 @@ export function GenerationPage() {
     return (
       <div className="min-h-screen flex flex-col bg-[#F9F3E3]">
         <Navbar />
-        <main className="flex-1 flex items-center justify-center">
+        <main className="flex-1 flex items-start justify-center">
           <div className="text-center p-8">
             <p className="text-gray-600 mb-4">Aucune commande en cours.</p>
             <Button
