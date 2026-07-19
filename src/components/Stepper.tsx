@@ -2,133 +2,114 @@ import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 
 interface StepperProps {
-  currentStep: number; // 1-indexed: 1=Formulaire, 2=Formule, 3=Confirmation, 4=Paiement, 5=Génération
+  currentStep: number; // 1=Formulaire, 2=Formule, 3=Confirmation, 4=Paiement, 5=Génération
 }
 
 const steps = [
-  { label: "Formulaire", shortLabel: "Saisie" },
-  { label: "Choix formule", shortLabel: "Formule" },
+  { label: "Saisie", shortLabel: "Saisie" },
+  { label: "Formule", shortLabel: "Formule" },
   { label: "Confirmation", shortLabel: "Confirmer" },
   { label: "Paiement", shortLabel: "Payer" },
-  { label: "Génération", shortLabel: "Rapport" },
+  { label: "Rapport", shortLabel: "Rapport" },
 ];
 
 export function Stepper({ currentStep }: StepperProps) {
   return (
-    <div className="w-full max-w-3xl mx-auto px-4 py-4 sm:py-6 ">
-      <div className="flex items-center justify-between relative">
-        {steps.map((step, index) => {
-          const stepNumber = index + 1;
-          const isCompleted = stepNumber < currentStep;
-          const isActive = stepNumber === currentStep;
+    <div className="w-full bg-white border-b border-[#E8F2F0]">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4">
+        <div className="flex items-center">
+          {steps.map((step, index) => {
+            const stepNumber = index + 1;
+            const isCompleted = stepNumber < currentStep;
+            const isActive = stepNumber === currentStep;
+            const isLast = index === steps.length - 1;
 
-          return (
-            <div
-              key={step.label}
-              className="flex flex-col items-center relative z-10 flex-1"
-            >
-              {/* Connector line (before this step) */}
-              {index > 0 && (
-                <div
-                  className="absolute top-[18px] right-1/2 h-[3px] w-full -z-10"
-                  style={{ transform: "translateX(-0%)" }}
-                >
+            return (
+              <div key={step.label} className="flex items-center flex-1 last:flex-none">
+                {/* Step indicator */}
+                <div className="flex flex-col items-center relative">
                   <motion.div
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: isCompleted || isActive ? 1 : 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="h-full origin-left"
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.35, delay: index * 0.06 }}
+                    className="relative flex items-center justify-center rounded-full"
                     style={{
-                      backgroundColor:
-                        isCompleted || isActive ? "#1A5C52" : "#D1D5DB",
+                      width: 32,
+                      height: 32,
+                      backgroundColor: isCompleted
+                        ? "#1A5C52"
+                        : isActive
+                          ? "#B8962E"
+                          : "transparent",
+                      border: isCompleted || isActive
+                        ? "none"
+                        : "1.5px solid #D1D5DB",
                     }}
-                  />
-                  {/* Background line */}
-                  <div
-                    className="absolute inset-0 -z-10"
-                    style={{ backgroundColor: "#E5E7EB" }}
-                  />
-                </div>
-              )}
-
-              {/* Circle */}
-              <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.3, delay: index * 0.08 }}
-                className="relative flex items-center justify-center rounded-full transition-all duration-300"
-                style={{
-                  width: 36,
-                  height: 36,
-                  backgroundColor: isCompleted
-                    ? "#1A5C52"
-                    : isActive
-                      ? "#B8962E"
-                      : "#E5E7EB",
-                  boxShadow: isActive
-                    ? "0 0 0 4px rgba(184, 150, 46, 0.25)"
-                    : isCompleted
-                      ? "0 0 0 4px rgba(26, 92, 82, 0.15)"
-                      : "none",
-                }}
-              >
-                {isCompleted ? (
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", stiffness: 300, delay: 0.1 }}
                   >
-                    <Check className="w-5 h-5 text-white" strokeWidth={3} />
+                    {isCompleted ? (
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ type: "spring", stiffness: 320, delay: 0.08 }}
+                      >
+                        <Check className="w-4 h-4 text-white" strokeWidth={2.5} />
+                      </motion.div>
+                    ) : (
+                      <span
+                        className="text-[12px] font-semibold"
+                        style={{
+                          color: isActive ? "#fff" : "#9CA3AF",
+                          fontFamily: "'Montserrat', sans-serif",
+                        }}
+                      >
+                        {stepNumber}
+                      </span>
+                    )}
+
+                    {/* Active pulsing ring */}
+                    {isActive && (
+                      <motion.div
+                        animate={{ scale: [1, 1.55, 1], opacity: [0.35, 0, 0.35] }}
+                        transition={{ repeat: Infinity, duration: 2.2 }}
+                        className="absolute inset-0 rounded-full"
+                        style={{ border: "2px solid #B8962E" }}
+                      />
+                    )}
                   </motion.div>
-                ) : (
-                  <span
-                    className="text-sm font-semibold"
+
+                  {/* Label */}
+                  <motion.span
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: index * 0.08 + 0.2 }}
+                    className="mt-1.5 text-center text-[10px] leading-tight hidden sm:block"
                     style={{
-                      color: isActive ? "#FFFFFF" : "#9CA3AF",
-                      fontFamily: "'Montserrat', Arial, sans-serif",
+                      fontFamily: "'Montserrat', sans-serif",
+                      fontWeight: isActive ? 600 : isCompleted ? 500 : 400,
+                      color: isCompleted ? "#1A5C52" : isActive ? "#B8962E" : "#9CA3AF",
+                      whiteSpace: "nowrap",
                     }}
                   >
-                    {stepNumber}
-                  </span>
-                )}
+                    {step.label}
+                  </motion.span>
+                </div>
 
-                {/* Active pulse ring */}
-                {isActive && (
-                  <motion.div
-                    animate={{
-                      scale: [1, 1.5, 1],
-                      opacity: [0.4, 0, 0.4],
-                    }}
-                    transition={{ repeat: Infinity, duration: 2 }}
-                    className="absolute inset-0 rounded-full border-2 border-[#B8962E]"
-                  />
+                {/* Connector */}
+                {!isLast && (
+                  <div className="flex-1 mx-2 h-[2px] bg-[#E5E7EB] relative overflow-hidden" style={{ minWidth: 12 }}>
+                    <motion.div
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: isCompleted ? 1 : 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      className="absolute inset-0 origin-left"
+                      style={{ backgroundColor: "#1A5C52" }}
+                    />
+                  </div>
                 )}
-              </motion.div>
-
-              {/* Label */}
-              <motion.span
-                initial={{ opacity: 0, y: 4 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 + 0.2 }}
-                className="mt-2 text-center leading-tight"
-                style={{
-                  fontSize: "11px",
-                  fontFamily: "'Inter', Calibri, sans-serif",
-                  fontWeight: isActive ? 600 : isCompleted ? 500 : 400,
-                  color: isCompleted
-                    ? "#1A5C52"
-                    : isActive
-                      ? "#B8962E"
-                      : "#9CA3AF",
-                }}
-              >
-                {/* Show short label on small screens */}
-                <span className="hidden sm:inline">{step.label}</span>
-                <span className="sm:hidden">{step.shortLabel}</span>
-              </motion.span>
-            </div>
-          );
-        })}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
