@@ -108,12 +108,12 @@ export default function PlanSection() {
                 </li>
               ))}
             </ul>
-            <a
+            {/* <a
               href="#formulaire"
               className="duovrai-btn block text-center w-full border-2 border-[#1A5C52] text-[#1A5C52] hover:bg-[#1A5C52] hover:text-white px-6 py-3.5 text-[15px] font-medium transition-all rounded-[8px]"
             >
               Choisir Essentiel
-            </a>
+            </a> */}
           </motion.div>
 
           {/* ── Premium ── */}
@@ -179,12 +179,12 @@ export default function PlanSection() {
                 </li>
               ))}
             </ul>
-            <a
+            {/* <a
               href="#formulaire"
               className="duovrai-btn block text-center w-full bg-[#B8962E] text-white hover:bg-[#a18225] px-6 py-3.5 text-[15px] font-medium transition-all rounded-[8px]"
             >
               Choisir Premium
-            </a>
+            </a> */}
           </motion.div>
         </div>
       </div>
