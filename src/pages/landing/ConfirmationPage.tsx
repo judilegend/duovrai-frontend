@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useFormData } from "@/context/FormDataContext";
+import { useFormData, type FormData } from "@/context/FormDataContext";
 import { useStripeCheckout } from "@/hooks/useStripeCheckout";
 import { Edit2, Lock, ArrowLeft, Loader2, ShieldCheck, AlertTriangle } from "lucide-react";
 import HeaderSection from "@/components/landing/Header";
@@ -33,20 +33,30 @@ export function ConfirmationPage() {
   const { formData, setFormData } = useFormData();
   const { loadingPlan, error, handleSelectPlan } = useStripeCheckout();
   const [isEditing, setIsEditing] = useState(false);
-  const [localData, setLocalData] = useState(
+  const [localData, setLocalData] = useState<FormData>(
     formData || {
       prenom1: "",
       date1: "",
       prenom2: "",
       date2: "",
       email: "",
-      offre: "essentiel" as const,
+      offre: "essentiel",
     },
   );
 
-  // Redirect if no form data
+  useEffect(() => {
+    if (formData) {
+      setLocalData(formData);
+    }
+  }, [formData]);
+
+  useEffect(() => {
+    if (!formData) {
+      navigate("/");
+    }
+  }, [formData, navigate]);
+
   if (!formData) {
-    navigate("/");
     return null;
   }
 
